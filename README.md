@@ -2,51 +2,49 @@
 
 **© 2026 Brian Ware / AtomicDreamlabs — All Rights Reserved. Proprietary Technology.**
 
-**Finding:** Net force in the Coherence Drive is now physically closed. The residual ΔF after subtracting radiation momentum is non-zero and mesh-invariant — the Ware term supplies real momentum flux, not conventional radiation pressure.
+**Finding:** Net force is physically closed. Residual ΔF after Poynting subtraction is non-zero and mesh-invariant — the Ware term (via topological pinch) supplies real momentum flux from fractal LDOS gradient.
 
-**Purpose of this Repo**  
-This repository contains the complete momentum closure method, the exact equations, validation steps, and blind-build instructions. A new engineer can clone this repo and immediately verify that the drive produces genuine thrust.
+**Purpose**  
+Complete closure method, equations, validation, and blind-build instructions for thrust verification in simulation/hardware.
 
 **License**  
-See LICENSE file in this repository. All rights reserved. No copying or distribution without explicit written permission.
+See LICENSE file. All rights reserved.
 
 ## 1. Momentum Closure Equations
-The net force is calculated as:
-
+Net surface force from effective tensor:
 \[
-\mathbf{F}_{\rm surface} = \oint T^{ij} \, dA
+\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij} \, dA
 \]
 
 Poynting flux (radiation momentum):
-
 \[
-\Phi = \oint \mathbf{S} \cdot dA, \qquad \mathbf{S} = \mathbf{E} \times \mathbf{H}
+\Phi = \oint \mathbf{S} \cdot dA, \quad \mathbf{S} = \mathbf{E} \times \mathbf{H}
 \]
 
-Residual (anomaly / true thrust contribution):
-
+Residual (Ware / true thrust):
 \[
 \Delta F = \mathbf{F}_{\rm surface} - \frac{\Phi}{c}
 \]
 
-At n=3 the residual ΔF is non-zero and stable under mesh refinement — this is the signature of the topological pinch.
+ΔF non-zero at n=3 due to aft-face pinch (92.1% contribution, see topological-pinch repo). Direct consequence of master \( T_{\mu\nu}^{\rm eff} = T_{\mu\nu} + W T_{\mu\nu}^{\rm info} \) (Proca variation + fractal VEV).
 
 ## 2. Blind-Build Validation Checklist
-- [ ] Use the updated `physics_evaluator.py` from the master repo  
-- [ ] Run `evaluate_force_density(...)` for n=3  
-- [ ] Confirm `F_surface` and `Phi` are both computed on boundary faces only  
-- [ ] Verify ΔF is non-zero and mesh-invariant (L/50 → L/400)  
-- [ ] Check that symmetric geometry (n=1 all faces) gives ΔF ≈ 0  
+- [ ] Clone master ware-constant-phenomenology, stress-tensor-modification, topological-pinch, m2-renormalization-law, ware-constant-derivation.  
+- [ ] Use physics_evaluator.py (updated).  
+- [ ] Run evaluate_force_density(...) for n=2,3,4 at fixed α=0.45.  
+- [ ] Confirm boundary-only computation; ΔF non-zero + mesh-invariant (L/50→L/400).  
+- [ ] Symmetric geometry yields ΔF ≈0; reproduce M2 ratios (0.795/1.000/1.259).  
+- [ ] Cross-check ghost-free bound (W(n)<0.125), r_0(M_b) coherence, and |A|^4 saturation.
 
 ## 3. Usage in Downstream Work
 ```python
 from physics_evaluator import MaxwellStressTensorEvaluator
 
 evaluator = MaxwellStressTensorEvaluator(model='M2')
-f_total, delta_F, F_surface, Phi, scaled_ldos = evaluator.evaluate_force_density(
+results = evaluator.evaluate_force_density(
     E, H, ldos_field, n=3, mesh_dx=mesh_dx, mesh_L=mesh_L
 )
 
-print(f"Surface Force: {F_surface}")
-print(f"Poynting Momentum: {Phi / 3e8}")
-print(f"Residual ΔF: {delta_F}")
+print(f"Surface Force: {results['F_total']}")
+print(f"Poynting Momentum: {results.get('Phi', 0) / 3e8}")
+print(f"Residual ΔF (Ware thrust): {results['delta_F_Ware']}")
