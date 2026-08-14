@@ -1,50 +1,52 @@
 # Momentum Closure (Coherence Drive)
 
-**© 2026 Brian Ware / AtomicDreamlabs — All Rights Reserved. Proprietary Technology.**
+**© 2026 William B. Ware / Atomic Dream Labs — All Rights Reserved.**
 
-**Finding:** Net force is physically closed. Residual ΔF after Poynting subtraction is non-zero and mesh-invariant — the Ware term (via topological pinch) supplies real momentum flux from fractal LDOS gradient.
+**Status (2026-08-14):** Conceptual statement of the required conservation structure. No public numerical demonstration of a non-zero, mesh-invariant residual exists yet.
 
-**Purpose**  
-Complete closure method, equations, validation, and blind-build instructions for thrust verification in simulation/hardware.
+---
 
-**License**  
-See LICENSE file. All rights reserved.
+## 1. Closure Relations
 
-## 1. Momentum Closure Equations
-Net surface force from effective tensor:
+Net surface force from the effective stress tensor:
+
 \[
-\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij} \, dA
+\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij}\,dA_j
 \]
 
-Poynting flux (radiation momentum):
+Poynting (field-momentum) flux:
+
 \[
-\Phi = \oint \mathbf{S} \cdot dA, \quad \mathbf{S} = \mathbf{E} \times \mathbf{H}
+\Phi = \oint \mathbf{S}\cdot dA, \qquad \mathbf{S}=\mathbf{E}\times\mathbf{H}
 \]
 
-Residual (Ware / true thrust):
+Residual attributed to the Ware / informational contribution:
+
 \[
 \Delta F = \mathbf{F}_{\rm surface} - \frac{\Phi}{c}
 \]
 
-ΔF non-zero at n=3 due to aft-face pinch (92.1% contribution, see topological-pinch repo). Direct consequence of master \( T_{\mu\nu}^{\rm eff} = T_{\mu\nu} + W T_{\mu\nu}^{\rm info} \) (Proca variation + fractal VEV).
+For ordinary electromagnetic fields in free space the surface integral of the Maxwell stress vanishes (or is exactly cancelled by the Poynting term). A non-zero residual therefore requires a genuine contribution from \(T^{\rm info}\).
 
-## 2. Blind-Build Validation Checklist
-- [ ] Clone master ware-constant-phenomenology, stress-tensor-modification, topological-pinch, m2-renormalization-law, ware-constant-derivation.  
-- [ ] Use physics_evaluator.py (updated).  
-- [ ] Run evaluate_force_density(...) for n=2,3,4 at fixed α=0.45.  
-- [ ] Confirm boundary-only computation; ΔF non-zero + mesh-invariant (L/50→L/400).  
-- [ ] Symmetric geometry yields ΔF ≈0; reproduce M2 ratios (0.795/1.000/1.259).  
-- [ ] Cross-check ghost-free bound (W(n)<0.125), r_0(M_b) coherence, and |A|^4 saturation.
+---
 
-## 3. Usage in Downstream Work
-```python
-from physics_evaluator import MaxwellStressTensorEvaluator
+## 2. Link to the Broader Framework
 
-evaluator = MaxwellStressTensorEvaluator(model='M2')
-results = evaluator.evaluate_force_density(
-    E, H, ldos_field, n=3, mesh_dx=mesh_dx, mesh_L=mesh_L
-)
+The residual is hypothesized to originate from the same Ware-scaled informational stress that appears in the modified Einstein equations and in the stress-tensor-modification repository. Spatial asymmetry is supplied by the 0.45 Sierpinski geometry (topological-pinch claim).
 
-print(f"Surface Force: {results['F_total']}")
-print(f"Poynting Momentum: {results.get('Phi', 0) / 3e8}")
-print(f"Residual ΔF (Ware thrust): {results['delta_F_Ware']}")
+---
+
+## 3. Current Gaps
+
+- No released mesh data or convergence study.
+- The evaluator fragment in stress-tensor-modification does not yet implement a real Maxwell stress or surface integral.
+- Claims of “92 % aft-face contribution” and specific force ratios remain unverified in the public record.
+
+---
+
+## Cross-References
+
+- Mathematics: [ware-constant-phenomenology](https://github.com/beyond-repair/ware-constant-phenomenology)
+- Stress-tensor fragment: [stress-tensor-modification](https://github.com/beyond-repair/stress-tensor-modification)
+- Geometry & pinch: [sierpinski-geometry-045](https://github.com/beyond-repair/sierpinski-geometry-045), [topological-pinch](https://github.com/beyond-repair/topological-pinch)
+- Integration status: [coherence-drive](https://github.com/beyond-repair/coherence-drive)
