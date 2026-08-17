@@ -1,13 +1,10 @@
-# Momentum Closure
+# Momentum Closure (Conceptual)
 
-**Status (2026-08-14):** Conceptual.
+**Status (2026-08-17):** Notes only. No mesh-converged residual demonstration in this repository.
 
-Required structure:
+Required structure (aspirational):
 \[
-\mathbf{F}_{\rm surface}=\oint T_{\rm eff}^{ij}\,dA_j,\quad
-\Delta F = F_{\rm surface} - \Phi/c
+\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij}\,dA_j
 \]
 
-Evaluator and full-wave EFIE exist in stress-tensor-modification. No released mesh-converged residual with physical (non-synthetic) fields yet.
-
-Cross-ref: [stress-tensor-modification](https://github.com/beyond-repair/stress-tensor-modification)
+Working evaluators live in [stress-tensor-modification](https://github.com/beyond-repair/stress-tensor-modification). No released physical (non-synthetic) residual force claim.
