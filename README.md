@@ -16,31 +16,33 @@
 People hear “Ware term” and imagine free energy.  
 **Momentum closure** is the discipline layer: if the model produces a net push, it must appear as a **non-canceling boundary flux** of an effective stress tensor — not as a verbal miracle.
 
-## Why you need it
-
-| Need | Use this repo |
-|------|----------------|
-| Understand the residual-force *story* | Surface form of \(\mathbf{F}\) |
-| Avoid false “proofs” | Notes only — **no** converged physical residual here |
-| Find working code | Go to **stress-tensor-modification** |
-
-## How it works (conceptual)
+## Core identity
 
 $$
-\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij}\, dA_j
+\mathbf{F}_{\rm surface} = \oint T_{\rm eff}^{ij}\, n_j\, dA
 $$
 
-with
+with \(T_{\rm eff}\) as in [MATH_THEORY_CLOSURE](https://github.com/beyond-repair/coherence-drive/blob/main/docs/MATH_THEORY_CLOSURE.md).
 
-$$
-T_{\rm eff} = T_{\rm EM} + W(n)\,\chi_{\rm vac}\,(\nabla\Psi_{\rm info})
-$$
+## Link to topological pinch
 
-(as frozen in [MATH_THEORY_CLOSURE](https://github.com/beyond-repair/coherence-drive/blob/main/docs/MATH_THEORY_CLOSURE.md)).
+Asymmetry *might* localize flux (aft-face “pinch”). That is a **separate hypothesis**:
 
-**Status:** conceptual notes. **No** mesh-converged residual demonstration in this repository. **No** released physical thrust claim.
+→ [topological-pinch](https://github.com/beyond-repair/topological-pinch)  
+→ Joint write-up: [MOMENTUM_PINCH_FRAMEWORK.md](MOMENTUM_PINCH_FRAMEWORK.md)
 
-## Related
+Pinch does not replace surface-integral discipline. Localization metrics without net \(|\mathbf{F}|\) above a spherical control floor are not thrust.
 
-- Evaluators: [stress-tensor-modification](https://github.com/beyond-repair/stress-tensor-modification)  
-- Index: [coherence-drive](https://github.com/beyond-repair/coherence-drive)
+## Status
+
+| Item | Value |
+|------|--------|
+| Claim level | 1 (conceptual) |
+| Mesh-converged residual here | **No** |
+| Physical thrust claim | **No** |
+| Stage-2 tested maps (scalar / Proca P-E2) | Archived **null** (net residual ≤ floor) |
+
+Working evaluators: [stress-tensor-modification](https://github.com/beyond-repair/stress-tensor-modification).  
+Index: [coherence-drive](https://github.com/beyond-repair/coherence-drive).
+
+See [CLAIM_STATUS.md](CLAIM_STATUS.md).
