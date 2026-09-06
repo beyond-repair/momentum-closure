@@ -1,30 +1,22 @@
 # Multidimensional Convergence Tensor
 
-Implemented in `momentum_closure/convergence/tensor.py`.
+**State (Sweep-083):** PLANNED / UNVERIFIED.
 
-## Axes
+`momentum_closure/convergence/tensor.py` is **not** present on `main` (tree SHA `ba13d1b9…`).  
+`tests/test_convergence_tensor.py` is **not** present.  
+pytest “21 passed” is **not** an Actions-verified result.
+
+Package `__init__.py` still imports `.tensor`. That import **cannot** succeed until the module is added.
+
+## Axes (specified, not implemented here)
+
 - h (mesh), R (surface radius), delta_theta (angular), delta_f (frequency)
 - BC (boundary), tau (solver tolerance), delta_t (timestep)
 
-## Fail-closed rules
-- Tolerances must be declared before evaluation
-- Missing evidence → NOT_CERTIFIED (never implicit PASS)
-- Force residual is always a 3-vector
+## Fail-closed rules (specified)
 
-## Tests
-```
-python -m pytest tests/test_convergence_tensor.py -v
-# 21 passed
-```
+- Tolerances declared before evaluation
+- Missing evidence → NOT_CERTIFIED
+- Force residual is a 3-vector
 
-## Quick use
-```python
-from momentum_closure import ConvergenceTensor, ConvergenceAxis
-
-t = ConvergenceTensor(required_axes=[ConvergenceAxis.MESH, ConvergenceAxis.ANGULAR])
-t.declare_tolerances({ConvergenceAxis.MESH: 1e-3, ConvergenceAxis.ANGULAR: 1e-3})
-t.add_point({"h": 0.1, "delta_theta": 0.05}, (1e-9, 0, 0))
-t.add_point({"h": 0.05, "delta_theta": 0.05}, (1.001e-9, 0, 0))
-cert = t.evaluate()
-print(cert.overall_status, cert.is_certified)
-```
+Do not paste usage examples that assume `ConvergenceTensor` exists until the blob lands.
