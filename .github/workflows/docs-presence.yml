@@ -1,0 +1,21 @@
+name: docs-presence
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Required files and UNSUPPORTED tokens
+        run: |
+          set -euo pipefail
+          test -f README.md
+          test -f GOVERNANCE.md
+          test -f CLAIM_STATUS.md
+          test -f CLAIMS.md
+          grep -q 'UNSUPPORTED' CLAIM_STATUS.md
+          grep -q 'RESEARCH' GOVERNANCE.md
