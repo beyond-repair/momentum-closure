@@ -12,6 +12,7 @@ The following claims remain **UNSUPPORTED**:
 - Full-wave / BEM adapter — **UNSUPPORTED**
 - Product CI green for physics residual — **UNSUPPORTED** (docs + unit tests only)
 - Any energy-extraction or propulsion performance number — **UNSUPPORTED**
+- Ware term supplying a net momentum flux — **UNSUPPORTED** (not computed here)
 
 ## Feature matrix
 
@@ -20,8 +21,9 @@ The following claims remain **UNSUPPORTED**:
 | Geometry helpers | VERIFIED present |
 | RF feed helpers | VERIFIED present |
 | Surface-integral statement (docs) | VERIFIED (docs) |
-| Convergence tensor (`tensor.py`) | VERIFIED present |
-| Unit tests (`tests/test_convergence_tensor.py`) | VERIFIED present (4 passed) |
+| Convergence tensor (`tensor.py`) | VERIFIED present (does not certify a physical residual) |
+| Far-field fixture `F = P a /(3c)` | classical identity check only; midpoint mesh misses declared `1e-3` |
+| Unit tests (`tests/`) | VERIFIED present (tensor + geometry/feed + far-field fixture) |
 | Docs-presence CI | VERIFIED present |
 | Product / residual CI | ABSENT (not required at L1) |
 | Releases / tags | NONE |

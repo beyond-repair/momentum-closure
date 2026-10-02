@@ -40,6 +40,27 @@ Surface force is the flux of T_eff. Complementary far-field/channel flux must ca
 
 ---
 
+## Install, run, and test
+
+Python 3.10+. From a clone of the default branch:
+
+```bash
+python -m pip install -e ".[dev]"
+momentum-closure
+python -m pytest -q
+```
+
+`momentum-closure` prints the CD-N3 scale ladder, the SMA/coax feed, and the classical far-field identity `F = P a / (3c)` for `P = 1 W`, `a = 0.9`. Optional `--out DIR` writes the JSON manifests and OpenSCAD.
+
+What the command is allowed to say:
+
+- Gauss–Legendre on that pattern reproduces `0.9/(3c)` newtons.
+- A midpoint Riemann sum on the same pattern does **not** meet the a-priori mesh tolerance `1e-3`. That failure is printed. The tolerance is not loosened.
+- Pairing the fixture force with its opposite cancels in the bookkeeping residual. That is not a device.
+- `physical_thrust`, `ware_momentum_flux`, `mesh_converged_residual`, and `energy_extraction` stay **UNSUPPORTED**.
+
+No full-wave solve, no BEM adapter, and no propulsion result are in this repository.
+
 ## Momentum Closure Framework (v1.7)
 
 ### Implementation status (Sweep-158 tree + local pytest)
@@ -48,18 +69,19 @@ Surface force is the flux of T_eff. Complementary far-field/channel flux must ca
 |-----------|--------|
 | Field representation + SI dimensional checks | PLANNED (specified) |
 | Single-channel momentum ledger | PLANNED (specified) |
-| Formal involutive ±45° mirror + even/odd | PLANNED (specified) |
-| Analytic radiation fixtures + positivity | PLANNED (specified) |
+| Formal involutive ±45° mirror + even/odd | **checked** (Householder, algebra only) |
+| Analytic radiation fixtures + positivity | **checked** (see far-field row; `|a|>1` is INVALID_INPUT) |
 | Fail-closed certification state machine | PLANNED (specified) |
-| Multidimensional convergence tensor (`tensor.py`) | **VERIFIED present** |
-| Surface-invariance pairwise ε metric | PLANNED |
-| Regression tests (`tests/test_convergence_tensor.py`) | **VERIFIED present** (4 passed) |
-| Geometry helpers | VERIFIED present |
-| RF feed helpers | VERIFIED present |
+| Multidimensional convergence tensor (`tensor.py`) | **VERIFIED present** (bookkeeping only) |
+| Classical far-field fixture `F = P a / (3c)` | **checked** (Gauss matches; midpoint mesh **FAILED** at declared `1e-3`) |
+| Surface-invariance pairwise ε metric | DECLARED, not measured (no second surface) |
+| Regression tests | **present** (`pytest`; tensor tests need only pytest, fixture/geometry tests need numpy) |
+| Geometry helpers | VERIFIED present (`momentum-closure` or `run_p0_b2`) |
+| RF feed helpers | VERIFIED present (`run_p0_c1`) |
 | Docs-presence CI | VERIFIED present |
 | Full-wave / BEM adapter | PLANNED |
 
-Package `__init__.py` imports `.convergence.tensor` — **resolved**. ConvergenceTensor never certifies a physical residual; it only records declared tolerances and numerical status.
+Package `__init__.py` imports `.convergence.tensor` — **resolved**. ConvergenceTensor never certifies a physical residual; it only records declared tolerances and numerical status. The CLI audit's mesh axis is a midpoint quadrature comparison and is expected to print `FAILED` against tolerance `1e-3`.
 
 ### Key invariant
 
