@@ -17,11 +17,12 @@ Code > documentation > roadmap.
 | RF-feed helpers | VERIFIED present |
 | `COMPATIBLE_CLOSURE.md` surface-integral statement | VERIFIED (docs) |
 | `momentum_closure/convergence/tensor.py` | **VERIFIED present** |
-| `tests/test_convergence_tensor.py` | **VERIFIED present** (4 passed) |
+| `tests/` (tensor, geometry/feed, far-field fixture) | **VERIFIED present** |
 | Import `from momentum_closure import ConvergenceTensor` | **VERIFIED** |
 | Docs-presence workflow | VERIFIED present |
 | Releases / tags | NONE |
 | Mesh-converged residual / physical thrust | **FORBIDDEN / not claimed** |
+| Ware momentum flux / propulsion number | **FORBIDDEN / not claimed** |
 
 ## Planned (explicit, not implemented here)
 
